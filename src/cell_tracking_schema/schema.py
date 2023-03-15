@@ -1,4 +1,4 @@
-from typing import Any, List, Tuple, Optional
+from typing import List, Optional
 from pydantic import BaseModel, root_validator
 
 
@@ -6,7 +6,7 @@ class RequiredFieldsMixin:
     """Return only the required fields from a pydantic model."""
 
     @classmethod
-    def required_fields(cls) -> list[str]:
+    def required_fields(cls) -> List[str]:
         fields = [f for f, v in cls.__fields__.items() if v.required]
         return fields
 
