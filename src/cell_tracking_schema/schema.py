@@ -4,6 +4,7 @@ from pydantic import BaseModel, root_validator
 
 class RequiredFieldsMixin:
     """Return only the required fields from a pydantic model."""
+
     @classmethod
     def required_fields(cls) -> list[str]:
         fields = [f for f, v in cls.__fields__.items() if v.required]
@@ -56,18 +57,19 @@ class GraphModel(BaseModel):
 
     @root_validator
     def validate(cls, values):
-        nodes = values.get("nodes")
-        edges = values.get("edges")
+        nodes: List[NodeModel] = values.get("nodes")
+        edges: List[EdgeModel] = values.get("edges")
         axis_order = values.get("axis_order")
         for node in nodes:
-            if len(node.pos) != len(axis_order):
+            if len(node.coordinates) != len(axis_order):
                 raise ValueError
-        node_ids = set(node.id for node in nodes)
+        node_ids = set(node.node_id for node in nodes)
         edge_node_set = set(edge.src_id for edge in edges).union(
             set(edge.dst_id for edge in edges)
         )
         if not edge_node_set.issubset(node_ids):
             raise ValueError
+        return values
 
 
 class TrackModel(GraphModel):

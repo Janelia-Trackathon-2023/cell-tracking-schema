@@ -146,9 +146,12 @@ def test_edge_model_extra():
 
 
 def test_graph_model(node_json, edge_json):
-    node = NodeModel(node_id=0, coordinates=(1.0, 2.0), score=0.5)
-    edge = EdgeModel(edge_id=0, src_id=0, dst_id=1, score=0.5)
-    graph = GraphModel(nodes=[node], edges=[edge], axis_order=("X", "Y"))
+    nodes = [
+        NodeModel(node_id=0, coordinates=(1.0, 2.0), score=0.5),
+        NodeModel(node_id=1, coordinates=(2.0, 3.0), score=0.5),
+    ]
+    edges = [EdgeModel(edge_id=0, src_id=0, dst_id=1, score=0.5)]
+    graph = GraphModel(nodes=nodes, edges=edges, axis_order=("X", "Y"))
     assert graph.nodes[0].node_id == 0
     assert graph.nodes[0].coordinates == (1.0, 2.0)
     assert graph.nodes[0].score == 0.5
